@@ -187,60 +187,6 @@
             opacity: 0.9;
         }
 
-        /* 访客计数器 */
-        .visitor-card {
-            text-align: center;
-        }
-
-        .visitor-count {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        /* 项目展示 */
-        .projects-list {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .project-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .project-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .project-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        .project-info h4 {
-            margin-bottom: 5px;
-            font-size: 1rem;
-        }
-
-        .project-info p {
-            font-size: 0.85rem;
-            opacity: 0.8;
-        }
-
         /* 响应式设计 */
         @media (max-width: 768px) {
             .container {
@@ -252,10 +198,6 @@
             }
 
             .clock {
-                font-size: 2.5rem;
-            }
-
-            .visitor-count {
                 font-size: 2.5rem;
             }
         }
@@ -338,47 +280,6 @@
             <div class="clock" id="clock">00:00:00</div>
             <div class="date" id="date">2026年5月18日 星期一</div>
         </div>
-
-        <!-- 访客计数器 -->
-        <div class="card visitor-card">
-            <h3><i class="fas fa-users"></i> 访客统计</h3>
-            <div class="visitor-count" id="visitor-count">0</div>
-            <p>感谢您的访问！</p>
-        </div>
-
-        <!-- 项目展示 -->
-        <div class="card">
-            <h3><i class="fas fa-code"></i> 我的项目</h3>
-            <div class="projects-list">
-                <div class="project-item">
-                    <div class="project-icon">
-                        <i class="fas fa-cube"></i>
-                    </div>
-                    <div class="project-info">
-                        <h4>工业扩展模组</h4>
-                        <p>为Minecraft添加更多工业设备和自动化功能</p>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-icon">
-                        <i class="fas fa-magic"></i>
-                    </div>
-                    <div class="project-info">
-                        <h4>魔法工艺</h4>
-                        <p>一个充满魔法元素的冒险模组</p>
-                    </div>
-                </div>
-                <div class="project-item">
-                    <div class="project-icon">
-                        <i class="fas fa-tools"></i>
-                    </div>
-                    <div class="project-info">
-                        <h4>实用工具库</h4>
-                        <p>提高游戏体验的各种实用工具</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -401,30 +302,9 @@
             document.getElementById('date').textContent = `${year}年${month}月${day}日 ${weekDay}`;
         }
 
-        // 访客计数器（使用localStorage存储）
-        function updateVisitorCount() {
-            let count = localStorage.getItem('visitorCount') || 0;
-            count = parseInt(count) + 1;
-            localStorage.setItem('visitorCount', count);
-            
-            // 数字动画效果
-            const counterElement = document.getElementById('visitor-count');
-            let current = 0;
-            const increment = Math.ceil(count / 50);
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= count) {
-                    current = count;
-                    clearInterval(timer);
-                }
-                counterElement.textContent = current.toLocaleString();
-            }, 30);
-        }
-
         // 初始化
         updateClock();
         setInterval(updateClock, 1000);
-        updateVisitorCount();
 
         // 添加页面加载动画
         document.addEventListener('DOMContentLoaded', () => {
