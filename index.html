@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="欢迎访问我的个人主页，这里有我的B站主页和更多精彩内容">
     <meta name="author" content="你的名字">
-    <title>我的个人主页</title>
+    <title>星猫的个人主页</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -14,14 +14,23 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+            --text-color: white;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-hover: rgba(0, 0, 0, 0.2);
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-gradient);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: white;
+            color: var(--text-color);
             padding: 40px 20px;
             position: relative;
             overflow-x: hidden;
@@ -45,6 +54,43 @@
             to { transform: rotate(360deg); }
         }
 
+        /* 浮动粒子效果 */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
         .container {
             max-width: 1200px;
             width: 100%;
@@ -56,19 +102,34 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.1);
+            background: var(--card-bg);
             backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px var(--shadow-color);
+            border: 1px solid var(--card-border);
             transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 40px var(--shadow-hover);
             border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .card h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         /* 个人信息卡片 */
@@ -78,14 +139,40 @@
             padding: 40px;
         }
 
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
         .avatar {
             width: 150px;
             height: 150px;
             border-radius: 50%;
             border: 4px solid rgba(255, 255, 255, 0.3);
-            margin-bottom: 20px;
             object-fit: cover;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .avatar-ring {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .name {
@@ -102,6 +189,22 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            min-height: 1.5em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: white;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
 
         /* 社交媒体链接 */
@@ -123,6 +226,23 @@
             font-weight: 500;
             transition: all 0.3s ease;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .social-link:hover::before {
+            left: 100%;
         }
 
         .bilibili {
@@ -147,6 +267,17 @@
             box-shadow: 0 6px 20px rgba(51, 51, 51, 0.6);
         }
 
+        .email {
+            background-color: #ea4335;
+            box-shadow: 0 4px 15px rgba(234, 67, 53, 0.4);
+        }
+
+        .email:hover {
+            background-color: #ff5745;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(234, 67, 53, 0.6);
+        }
+
         /* 统计卡片 */
         .stats-grid {
             display: grid;
@@ -157,12 +288,24 @@
 
         .stat-item {
             text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.05);
         }
 
         .stat-number {
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 5px;
+            background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .stat-label {
@@ -180,11 +323,149 @@
             font-weight: 700;
             margin-bottom: 10px;
             font-family: 'Courier New', monospace;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
         }
 
         .date {
             font-size: 1.1rem;
             opacity: 0.9;
+        }
+
+        /* 技能卡片 */
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skill-tag {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-tag:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* 项目卡片 */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .project-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .project-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-left-color: #fff;
+            transform: translateX(5px);
+        }
+
+        .project-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* 访客计数器 */
+        .visitor-counter {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .visitor-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-family: 'Courier New', monospace;
+        }
+
+        /* 主题切换按钮 */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 深色主题 */
+        body.dark-theme {
+            --primary-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --card-bg: rgba(0, 0, 0, 0.3);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(0, 0, 0, 0.5);
         }
 
         /* 响应式设计 */
@@ -220,6 +501,11 @@
                 height: 120px;
             }
 
+            .avatar-ring {
+                width: 130px;
+                height: 130px;
+            }
+
             .name {
                 font-size: 1.8rem;
             }
@@ -232,16 +518,38 @@
                 padding: 10px 20px;
                 font-size: 0.9rem;
             }
+
+            .theme-toggle, .back-to-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- 浮动粒子背景 -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="themeToggle" title="切换主题">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- 回到顶部按钮 -->
+    <button class="back-to-top" id="backToTop" title="回到顶部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <div class="container">
         <!-- 个人信息卡片 -->
         <div class="card profile-card">
-            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=yourname" alt="头像" class="avatar">
+            <div class="avatar-container">
+                <div class="avatar-ring"></div>
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=xingmao" alt="头像" class="avatar" onerror="this.src='https://ui-avatars.com/api/?name=XM&background=667eea&color=fff&size=150'">
+            </div>
             <h1 class="name">星猫</h1>
-            <p class="bio">Minecraft模组开发者 | 游戏内容创作者 | 热爱技术与分享</p>
+            <p class="bio" id="bio">Minecraft模组开发者 | 游戏内容创作者 | 热爱技术与分享<span class="cursor"></span></p>
             
             <div class="social-links">
                 <a href="https://space.bilibili.com/510250271" target="_blank" rel="noopener noreferrer" class="social-link bilibili">
@@ -252,6 +560,10 @@
                     <i class="fab fa-github"></i>
                     GitHub
                 </a>
+                <a href="mailto:yourname@example.com" class="social-link email">
+                    <i class="fas fa-envelope"></i>
+                    联系我
+                </a>
             </div>
         </div>
 
@@ -261,9 +573,108 @@
             <div class="clock" id="clock">00:00:00</div>
             <div class="date" id="date">2026年5月18日 星期一</div>
         </div>
+
+        <!-- 统计数据 -->
+        <div class="card stats-card">
+            <h3><i class="fas fa-chart-bar"></i> 数据统计</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="videoCount">128</div>
+                    <div class="stat-label">视频作品</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="followerCount">5.2K</div>
+                    <div class="stat-label">粉丝关注</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="modCount">15</div>
+                    <div class="stat-label">模组作品</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="downloadCount">100K+</div>
+                    <div class="stat-label">总下载量</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技能展示 -->
+        <div class="card skills-card">
+            <h3><i class="fas fa-code"></i> 技术栈</h3>
+            <div class="skills-list">
+                <span class="skill-tag">Java</span>
+                <span class="skill-tag">Minecraft Mod开发</span>
+                <span class="skill-tag">NeoForge</span>
+                <span class="skill-tag">KubeJS</span>
+                <span class="skill-tag">HTML/CSS/JS</span>
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">Gradle</span>
+                <span class="skill-tag">Git</span>
+                <span class="skill-tag">视频剪辑</span>
+                <span class="skill-tag">3D建模</span>
+            </div>
+        </div>
+
+        <!-- 项目展示 -->
+        <div class="card projects-card">
+            <h3><i class="fas fa-folder-open"></i> 精选项目</h3>
+            <div class="project-list">
+                <div class="project-item">
+                    <div class="project-title">
+                        <i class="fas fa-cube"></i>
+                        工业革命模组
+                    </div>
+                    <div class="project-desc">
+                        为Minecraft添加完整的工业体系，包括电力系统、自动化生产和高级机器
+                    </div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">
+                        <i class="fas fa-rocket"></i>
+                        太空探索模组
+                    </div>
+                    <div class="project-desc">
+                        实现太空旅行、星球探索和太空站建设的大型模组
+                    </div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">
+                        <i class="fas fa-puzzle-piece"></i>
+                        模组整合包
+                    </div>
+                    <div class="project-desc">
+                        精心打造的科技向整合包，包含100+精选模组和优化配置
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 访客计数器 -->
+        <div class="card visitor-card">
+            <h3><i class="fas fa-users"></i> 访客统计</h3>
+            <div class="visitor-counter">
+                <div class="visitor-number" id="visitorCount">000000</div>
+                <div>您是第 <span id="todayVisitor">0</span> 位今日访客</div>
+            </div>
+        </div>
     </div>
 
     <script>
+        // 创建浮动粒子
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         // 实时时钟功能
         function updateClock() {
             const now = new Date();
@@ -283,22 +694,179 @@
             document.getElementById('date').textContent = `${year}年${month}月${day}日 ${weekDay}`;
         }
 
-        // 初始化
-        updateClock();
-        setInterval(updateClock, 1000);
+        // 打字机效果
+        function typeWriter() {
+            const texts = [
+                "Minecraft模组开发者 | 游戏内容创作者 | 热爱技术与分享",
+                "专注于Minecraft模组开发与游戏内容创作",
+                "用代码创造无限可能，用视频分享快乐",
+                "致力于打造高质量的游戏体验"
+            ];
+            
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+            const bioElement = document.getElementById('bio');
+            const cursor = document.querySelector('.cursor');
+            
+            function type() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    bioElement.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    bioElement.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+                
+                let typeSpeed = isDeleting ? 50 : 100;
+                
+                if (!isDeleting && charIndex === currentText.length) {
+                    typeSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                    typeSpeed = 500;
+                }
+                
+                bioElement.appendChild(cursor);
+                setTimeout(type, typeSpeed);
+            }
+            
+            type();
+        }
 
-        // 添加页面加载动画
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    card.style.transition = 'all 0.5s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
+        // 数字动画
+        function animateNumber(element, target, duration = 2000) {
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    clearInterval(timer);
+                    current = target;
+                }
+                
+                if (target >= 1000) {
+                    element.textContent = Math.floor(current / 100) / 10 + 'K';
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+            }, 16);
+        }
+
+        // 访客计数器
+        function updateVisitorCounter() {
+            const today = new Date().toDateString();
+            let totalVisits = parseInt(localStorage.getItem('totalVisits') || '0');
+            let lastVisitDate = localStorage.getItem('lastVisitDate');
+            let todayVisits = parseInt(localStorage.getItem('todayVisits') || '0');
+            
+            // 如果是新的一天，重置今日访问数
+            if (lastVisitDate !== today) {
+                todayVisits = 0;
+                localStorage.setItem('lastVisitDate', today);
+            }
+            
+            // 增加访问计数
+            totalVisits++;
+            todayVisits++;
+            
+            // 保存到本地存储
+            localStorage.setItem('totalVisits', totalVisits);
+            localStorage.setItem('todayVisits', todayVisits);
+            
+            // 显示计数
+            document.getElementById('visitorCount').textContent = String(totalVisits).padStart(6, '0');
+            document.getElementById('todayVisitor').textContent = todayVisits;
+        }
+
+        // 主题切换
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+            
+            // 检查本地存储的主题设置
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark-theme');
+                
+                if (body.classList.contains('dark-theme')) {
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('theme', 'light');
+                }
             });
+        }
+
+        // 回到顶部功能
+        function initBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+            
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // 滚动动画
+        function initScrollAnimations() {
+            const cards = document.querySelectorAll('.card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            updateClock();
+            setInterval(updateClock, 1000);
+            typeWriter();
+            updateVisitorCounter();
+            initThemeToggle();
+            initBackToTop();
+            initScrollAnimations();
+            
+            // 数字动画
+            setTimeout(() => {
+                animateNumber(document.getElementById('videoCount'), 128);
+                animateNumber(document.getElementById('followerCount'), 5200);
+                animateNumber(document.getElementById('modCount'), 15);
+                animateNumber(document.getElementById('downloadCount'), 100000);
+            }, 500);
         });
     </script>
 </body>
